@@ -17,12 +17,12 @@
             width: 100%; /* Ajusta a largura do carrossel */
             cursor: grab;
         }
-
+    
         .carousel-wrapper {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
-
+    
         .course-item {
             display: flex;
             flex-direction: column;
@@ -30,86 +30,89 @@
             min-width: 200px; /* Tamanho fixo dos itens */
             margin: 0 10px; /* Margem lateral entre os cursos */
         }
-
+    
         .course-carousel img {
             width: 200px;
             height: 200px;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-
+    
         .course-carousel img:hover {
             transform: scale(1.1);
         }
-
+    
         .course-name {
             margin-top: 5px;
             text-align: center;
             font-weight: bold;
         }
-
+    
         .carousel-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-
+    
         .arrow {
             font-size: 30px;
             cursor: pointer;
             user-select: none;
             margin: 0 10px;
         }
-
+    
         /* Barra de rolagem centralizada */
         .scrollbar {
             display: flex;
             justify-content: center;
-            width: 80%;
+            width: 100%;
             margin: 10px 0;
+            /* Centralizando com flexbox */
+            max-width: 500px; /* Define uma largura máxima para a barra de rolagem */
+            margin: 10px auto; /* Margem automática para centralizar */
         }
-
+    
         .scrollbar input {
             width: 100%;
             cursor: pointer;
         }
-
+    
         /* Estilos para dispositivos móveis */
         @media (max-width: 768px) {
             .course-item {
                 min-width: 150px; /* Diminui a largura dos cursos no celular */
             }
-
+    
             .course-carousel img {
                 width: 150px;
                 height: 150px;
             }
-
+    
             .arrow {
                 font-size: 24px;
             }
-
+    
             .carousel-controls {
                 justify-content: space-between;
             }
         }
-
+    
         @media (max-width: 480px) {
             .course-item {
                 min-width: 120px; /* Ajuste adicional para telas menores */
             }
-
+    
             .course-carousel img {
                 width: 120px;
                 height: 120px;
             }
-
+    
             .arrow {
                 font-size: 20px;
             }
         }
-    </style>
+    </style>    
 </head>
 <body>
     <header>
@@ -153,12 +156,36 @@
                             <span class="course-name">Games kids</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso3.html"><img src="Tecnologia3.png" alt="Curso 3"></a>
+                            <a href="curso3.html"><img src="imagem-excel.webp" alt="Curso 3"></a>
                             <span class="course-name">Excel</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso4.html"><img src="Tecnologia4.png" alt="Curso 4"></a>
+                            <a href="curso4.html"><img src="imagem-powerpoin.png" alt="Curso 4"></a>
                             <span class="course-name">Powerpoint</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso5.html"><img src="Imagem-Word.png" alt="Curso 5"></a>
+                            <span class="course-name">Word</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso6.html"><img src="Imagem-Seguranca-Digital.png" alt="Curso 6"></a>
+                            <span class="course-name">Segurança Digital</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso7.html"><img src="Imagem-Multimidia.png" alt="Curso 7"></a>
+                            <span class="course-name">Multimídia</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso8.html"><img src="imagem-midias-sociais.png" alt="Curso 8"></a>
+                            <span class="course-name">Mídias Sociais</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="Curso9.html"><img src="imagem-manutenção-de-computadores.png" alt="Curso 9"></a>
+                            <span class="course-name">Manutenção de Computadores</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso10.html"><img src="Imagem-excel-avançado.webp" alt="Curso 10"></a>
+                            <span class="course-name">Excel Avançado</span>
                         </div>
                     </div>
                     <span class="arrow arrow-right">&#9654;</span>
