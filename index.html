@@ -14,14 +14,13 @@
             align-items: center;
             margin-top: 50px;
             overflow: hidden;
-            width: 80%;
+            width: 100%; /* Ajusta a largura do carrossel */
             cursor: grab;
         }
 
         .carousel-wrapper {
             display: flex;
             transition: transform 0.5s ease-in-out;
-            overflow: hidden;
         }
 
         .course-item {
@@ -51,7 +50,7 @@
 
         .carousel-controls {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
         }
@@ -60,7 +59,7 @@
             font-size: 30px;
             cursor: pointer;
             user-select: none;
-            margin: 0 20px;
+            margin: 0 10px;
         }
 
         /* Barra de rolagem centralizada */
@@ -78,15 +77,6 @@
 
         /* Estilos para dispositivos móveis */
         @media (max-width: 768px) {
-            .course-carousel {
-                width: 100%;
-            }
-
-            .arrow {
-                font-size: 24px;
-                margin: 0 10px;
-            }
-
             .course-item {
                 min-width: 150px; /* Diminui a largura dos cursos no celular */
             }
@@ -96,8 +86,27 @@
                 height: 150px;
             }
 
+            .arrow {
+                font-size: 24px;
+            }
+
             .carousel-controls {
                 justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .course-item {
+                min-width: 120px; /* Ajuste adicional para telas menores */
+            }
+
+            .course-carousel img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .arrow {
+                font-size: 20px;
             }
         }
     </style>
@@ -247,20 +256,23 @@
 
         carouselWrapper.addEventListener('mousedown', touchStart);
         carouselWrapper.addEventListener('mouseup', touchEnd);
-        carouselWrapper.addEventListener('mouseleave', touchEnd);
         carouselWrapper.addEventListener('mousemove', touchMove);
+        carouselWrapper.addEventListener('mouseleave', () => {
+            if (isDragging) touchEnd();
+        });
 
         carouselWrapper.addEventListener('touchstart', touchStart);
         carouselWrapper.addEventListener('touchend', touchEnd);
         carouselWrapper.addEventListener('touchmove', touchMove);
 
-        // Função para controlar a barra de rolagem
-        const scrollBar = document.getElementById('scroll-bar');
-        scrollBar.addEventListener('input', (e) => {
+        // Controle pela barra de rolagem
+        const bar = document.getElementById('scroll-bar');
+        bar.addEventListener('input', (e) => {
             const maxScroll = (courseItems.length - 1) * itemWidth;
             currentTranslate = -(e.target.value / 100) * maxScroll;
             carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
         });
+
     </script>
 </body>
 </html>
