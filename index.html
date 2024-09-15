@@ -14,6 +14,7 @@
             margin-top: 50px;
             overflow: hidden;
             width: 80%; /* Ajustar a largura do carrossel */
+            cursor: grab; /* Mudar o cursor ao passar sobre o carrossel */
         }
 
         .carousel-wrapper {
@@ -154,10 +155,71 @@
         const itemWidth = courseItems[0].offsetWidth + 20; // largura do item mais a margem
         let currentIndex = 0;
 
+        // Função para adicionar arraste com o mouse e toque
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID;
+        let startTouchPosX = 0;
+
+        const setPositionByIndex = () => {
+            currentTranslate = currentIndex * -itemWidth;
+            prevTranslate = currentTranslate;
+            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
+        };
+
+        const touchStart = (index) => (event) => {
+            isDragging = true;
+            startPos = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+            startTouchPosX = startPos;
+            animationID = requestAnimationFrame(animation);
+            carouselWrapper.style.transition = 'none';
+        };
+
+        const touchEnd = () => {
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+
+            const movedBy = currentTranslate - prevTranslate;
+
+            if (movedBy < -100 && currentIndex < courseItems.length - 1) {
+                currentIndex++;
+            }
+
+            if (movedBy > 100 && currentIndex > 0) {
+                currentIndex--;
+            }
+
+            setPositionByIndex();
+            carouselWrapper.style.transition = 'transform 0.3s ease-out';
+        };
+
+        const touchMove = (event) => {
+            if (isDragging) {
+                const currentPosition = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                currentTranslate = prevTranslate + currentPosition - startPos;
+            }
+        };
+
+        const animation = () => {
+            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
+            if (isDragging) requestAnimationFrame(animation);
+        };
+
+        carouselWrapper.addEventListener('mousedown', touchStart(0));
+        carouselWrapper.addEventListener('mouseup', touchEnd);
+        carouselWrapper.addEventListener('mouseleave', touchEnd);
+        carouselWrapper.addEventListener('mousemove', touchMove);
+
+        carouselWrapper.addEventListener('touchstart', touchStart(0));
+        carouselWrapper.addEventListener('touchend', touchEnd);
+        carouselWrapper.addEventListener('touchmove', touchMove);
+
         document.querySelector('.arrow-left').addEventListener('click', () => {
             if (currentIndex > 0) {
                 currentIndex--;
-                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                setPositionByIndex();
             }
         });
 
@@ -165,7 +227,7 @@
             const visibleItems = Math.floor(carouselWidth / itemWidth);
             if (currentIndex < courseItems.length - visibleItems) {
                 currentIndex++;
-                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                setPositionByIndex();
             }
         });
 
@@ -175,7 +237,7 @@
             const visibleItems = Math.floor(carouselWidth / itemWidth);
             if (currentIndex > courseItems.length - visibleItems) {
                 currentIndex = courseItems.length - visibleItems;
-                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                setPositionByIndex();
             }
         });
     </script>
