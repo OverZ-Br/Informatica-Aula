@@ -9,17 +9,19 @@
         /* Estilo das caixas de seleção navegáveis */
         .course-carousel {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             margin-top: 50px;
             overflow: hidden;
-            width: 80%; /* Ajustar a largura do carrossel */
-            cursor: grab; /* Mudar o cursor ao passar sobre o carrossel */
+            width: 80%;
+            cursor: grab;
         }
 
         .carousel-wrapper {
             display: flex;
             transition: transform 0.5s ease-in-out;
+            overflow: hidden;
         }
 
         .course-item {
@@ -61,18 +63,29 @@
             margin-left: 20px;
         }
 
+        /* Barra de rolagem em cima da roleta */
+        .scrollbar {
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        .scrollbar input {
+            width: 100%;
+            cursor: pointer;
+        }
+
         /* Estilos para dispositivos móveis */
         @media (max-width: 768px) {
             .course-carousel {
-                width: 100%; /* Ajustar a largura do carrossel para caber na tela */
+                width: 100%;
             }
 
             .arrow {
-                font-size: 24px; /* Reduzir o tamanho das setas em telas menores */
+                font-size: 24px;
             }
 
             .arrow-left {
-                margin-right: 10px; /* Ajustar espaçamento das setas em telas menores */
+                margin-right: 10px;
             }
 
             .arrow-right {
@@ -80,12 +93,12 @@
             }
 
             .course-item {
-                min-width: 150px; /* Ajustar o tamanho dos itens para telas menores */
+                min-width: 150px;
             }
 
             .course-carousel img {
                 width: 150px;
-                height: 150px; /* Ajustar tamanho das imagens em dispositivos móveis */
+                height: 150px;
             }
         }
     </style>
@@ -116,6 +129,9 @@
         <section id="cursos">
             <h2>Cursos Disponíveis</h2>
             <br>
+            <div class="scrollbar">
+                <input type="range" min="0" max="100" value="0" id="scroll-bar">
+            </div>
             <div class="course-carousel">
                 <span class="arrow arrow-left">&#9664;</span>
                 <div class="carousel-wrapper">
@@ -151,25 +167,39 @@
     <script>
         const carouselWrapper = document.querySelector('.carousel-wrapper');
         const courseItems = document.querySelectorAll('.course-item');
-        const carouselWidth = document.querySelector('.course-carousel').offsetWidth;
-        const itemWidth = courseItems[0].offsetWidth + 20; // largura do item mais a margem
+        const itemWidth = courseItems[0].offsetWidth + 20;
         let currentIndex = 0;
+        let currentTranslate = 0;
 
-        // Função para adicionar arraste com o mouse e toque
+        // Função para atualizar a posição com base no índice
+        const setPositionByIndex = () => {
+            currentTranslate = currentIndex * -itemWidth;
+            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
+        };
+
+        // Ajuste do carrossel com as setas
+        document.querySelector('.arrow-left').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                setPositionByIndex();
+            }
+        });
+
+        document.querySelector('.arrow-right').addEventListener('click', () => {
+            if (currentIndex < courseItems.length - 1) {
+                currentIndex++;
+                setPositionByIndex();
+            }
+        });
+
+        // Implementação do drag com mouse e toque
         let isDragging = false;
         let startPos = 0;
-        let currentTranslate = 0;
         let prevTranslate = 0;
         let animationID;
         let startTouchPosX = 0;
 
-        const setPositionByIndex = () => {
-            currentTranslate = currentIndex * -itemWidth;
-            prevTranslate = currentTranslate;
-            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
-        };
-
-        const touchStart = (index) => (event) => {
+        const touchStart = (event) => {
             isDragging = true;
             startPos = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
             startTouchPosX = startPos;
@@ -207,38 +237,21 @@
             if (isDragging) requestAnimationFrame(animation);
         };
 
-        carouselWrapper.addEventListener('mousedown', touchStart(0));
+        carouselWrapper.addEventListener('mousedown', touchStart);
         carouselWrapper.addEventListener('mouseup', touchEnd);
         carouselWrapper.addEventListener('mouseleave', touchEnd);
         carouselWrapper.addEventListener('mousemove', touchMove);
 
-        carouselWrapper.addEventListener('touchstart', touchStart(0));
+        carouselWrapper.addEventListener('touchstart', touchStart);
         carouselWrapper.addEventListener('touchend', touchEnd);
         carouselWrapper.addEventListener('touchmove', touchMove);
 
-        document.querySelector('.arrow-left').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                setPositionByIndex();
-            }
-        });
-
-        document.querySelector('.arrow-right').addEventListener('click', () => {
-            const visibleItems = Math.floor(carouselWidth / itemWidth);
-            if (currentIndex < courseItems.length - visibleItems) {
-                currentIndex++;
-                setPositionByIndex();
-            }
-        });
-
-        // Atualiza o carrossel ao redimensionar a janela
-        window.addEventListener('resize', () => {
-            const carouselWidth = document.querySelector('.course-carousel').offsetWidth;
-            const visibleItems = Math.floor(carouselWidth / itemWidth);
-            if (currentIndex > courseItems.length - visibleItems) {
-                currentIndex = courseItems.length - visibleItems;
-                setPositionByIndex();
-            }
+        // Função para controlar a barra de rolagem
+        const scrollBar = document.getElementById('scroll-bar');
+        scrollBar.addEventListener('input', (e) => {
+            const maxScroll = (courseItems.length - 1) * itemWidth;
+            currentTranslate = -(e.target.value / 100) * maxScroll;
+            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
         });
     </script>
 </body>
