@@ -49,24 +49,26 @@
             font-weight: bold;
         }
 
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
         .arrow {
             font-size: 30px;
             cursor: pointer;
             user-select: none;
+            margin: 0 20px;
         }
 
-        .arrow-left {
-            margin-right: 20px;
-        }
-
-        .arrow-right {
-            margin-left: 20px;
-        }
-
-        /* Barra de rolagem em cima da roleta */
+        /* Barra de rolagem centralizada */
         .scrollbar {
+            display: flex;
+            justify-content: center;
             width: 80%;
-            margin-bottom: 10px;
+            margin: 10px 0;
         }
 
         .scrollbar input {
@@ -82,14 +84,7 @@
 
             .arrow {
                 font-size: 24px;
-            }
-
-            .arrow-left {
-                margin-right: 10px;
-            }
-
-            .arrow-right {
-                margin-left: 10px;
+                margin: 0 10px;
             }
 
             .course-item {
@@ -99,6 +94,10 @@
             .course-carousel img {
                 width: 150px;
                 height: 150px;
+            }
+
+            .carousel-controls {
+                justify-content: space-between;
             }
         }
     </style>
@@ -133,26 +132,28 @@
                 <input type="range" min="0" max="100" value="0" id="scroll-bar">
             </div>
             <div class="course-carousel">
-                <span class="arrow arrow-left">&#9664;</span>
-                <div class="carousel-wrapper">
-                    <div class="course-item">
-                        <a href="quiz.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
-                        <span class="course-name">Informática Kids</span>
+                <div class="carousel-controls">
+                    <span class="arrow arrow-left">&#9664;</span>
+                    <div class="carousel-wrapper">
+                        <div class="course-item">
+                            <a href="quiz.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
+                            <span class="course-name">Informática Kids</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso2.html"><img src="Tecnologia2.png" alt="Curso 2"></a>
+                            <span class="course-name">Games kids</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso3.html"><img src="Tecnologia3.png" alt="Curso 3"></a>
+                            <span class="course-name">Excel</span>
+                        </div>
+                        <div class="course-item">
+                            <a href="curso4.html"><img src="Tecnologia4.png" alt="Curso 4"></a>
+                            <span class="course-name">Powerpoint</span>
+                        </div>
                     </div>
-                    <div class="course-item">
-                        <a href="curso2.html"><img src="Tecnologia2.png" alt="Curso 2"></a>
-                        <span class="course-name">Games kids</span>
-                    </div>
-                    <div class="course-item">
-                        <a href="curso3.html"><img src="Tecnologia3.png" alt="Curso 3"></a>
-                        <span class="course-name">Excel</span>
-                    </div>
-                    <div class="course-item">
-                        <a href="curso4.html"><img src="Tecnologia4.png" alt="Curso 4"></a>
-                        <span class="course-name">Powerpoint</span>
-                    </div>
+                    <span class="arrow arrow-right">&#9654;</span>
                 </div>
-                <span class="arrow arrow-right">&#9654;</span>
             </div>
         </section>
         <section id="contato">
@@ -167,7 +168,7 @@
     <script>
         const carouselWrapper = document.querySelector('.carousel-wrapper');
         const courseItems = document.querySelectorAll('.course-item');
-        const itemWidth = courseItems[0].offsetWidth + 20;
+        const itemWidth = courseItems[0].offsetWidth + 20; // largura do item mais a margem
         let currentIndex = 0;
         let currentTranslate = 0;
 
@@ -197,12 +198,11 @@
         let startPos = 0;
         let prevTranslate = 0;
         let animationID;
-        let startTouchPosX = 0;
 
         const touchStart = (event) => {
             isDragging = true;
             startPos = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-            startTouchPosX = startPos;
+            prevTranslate = currentTranslate;
             animationID = requestAnimationFrame(animation);
             carouselWrapper.style.transition = 'none';
         };
