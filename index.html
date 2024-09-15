@@ -88,7 +88,7 @@
             }
 
             .course-item {
-                min-width: 150px;
+                min-width: 150px; /* Diminui a largura dos cursos no celular */
             }
 
             .course-carousel img {
@@ -176,6 +176,14 @@
         const setPositionByIndex = () => {
             currentTranslate = currentIndex * -itemWidth;
             carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
+            updateScrollbar();
+        };
+
+        // Função para atualizar a posição da barra de rolagem
+        const updateScrollbar = () => {
+            const maxScroll = (courseItems.length - 1) * itemWidth;
+            const scrollValue = Math.abs((currentTranslate / maxScroll) * 100);
+            document.getElementById('scroll-bar').value = scrollValue;
         };
 
         // Ajuste do carrossel com as setas
