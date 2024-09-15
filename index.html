@@ -59,6 +59,34 @@
         .arrow-right {
             margin-left: 20px;
         }
+
+        /* Estilos para dispositivos móveis */
+        @media (max-width: 768px) {
+            .course-carousel {
+                width: 100%; /* Ajustar a largura do carrossel para caber na tela */
+            }
+
+            .arrow {
+                font-size: 24px; /* Reduzir o tamanho das setas em telas menores */
+            }
+
+            .arrow-left {
+                margin-right: 10px; /* Ajustar espaçamento das setas em telas menores */
+            }
+
+            .arrow-right {
+                margin-left: 10px;
+            }
+
+            .course-item {
+                min-width: 150px; /* Ajustar o tamanho dos itens para telas menores */
+            }
+
+            .course-carousel img {
+                width: 150px;
+                height: 150px; /* Ajustar tamanho das imagens em dispositivos móveis */
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,8 +131,8 @@
                         <span class="course-name">Excel</span>
                     </div>
                     <div class="course-item">
-                        <a href="curso4.html" ><img src="Tecnologia4.png" alt="Curso 4"></a>
-                        <spam class="course-name">Powerpoint</spam>
+                        <a href="curso4.html"><img src="Tecnologia4.png" alt="Curso 4"></a>
+                        <span class="course-name">Powerpoint</span>
                     </div>
                 </div>
                 <span class="arrow arrow-right">&#9654;</span>
@@ -137,6 +165,16 @@
             const visibleItems = Math.floor(carouselWidth / itemWidth);
             if (currentIndex < courseItems.length - visibleItems) {
                 currentIndex++;
+                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+            }
+        });
+
+        // Atualiza o carrossel ao redimensionar a janela
+        window.addEventListener('resize', () => {
+            const carouselWidth = document.querySelector('.course-carousel').offsetWidth;
+            const visibleItems = Math.floor(carouselWidth / itemWidth);
+            if (currentIndex > courseItems.length - visibleItems) {
+                currentIndex = courseItems.length - visibleItems;
                 carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
             }
         });
