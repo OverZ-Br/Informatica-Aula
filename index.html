@@ -13,6 +13,7 @@
             align-items: center;
             margin-top: 50px;
             overflow: hidden;
+            width: 80%; /* Ajustar a largura do carrossel */
         }
 
         .carousel-wrapper {
@@ -24,6 +25,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-width: 200px; /* Tamanho fixo dos itens */
             margin: 0 10px; /* Margem lateral entre os cursos */
         }
 
@@ -89,16 +91,20 @@
                 <span class="arrow arrow-left">&#9664;</span>
                 <div class="carousel-wrapper">
                     <div class="course-item">
-                        <a href="curso1.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
+                        <a href="quiz.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
                         <span class="course-name">Informática Kids</span>
                     </div>
                     <div class="course-item">
                         <a href="curso2.html"><img src="Tecnologia2.png" alt="Curso 2"></a>
-                        <span class="course-name">Games Kids</span>
+                        <span class="course-name">Games kids</span>
                     </div>
                     <div class="course-item">
                         <a href="curso3.html"><img src="Tecnologia3.png" alt="Curso 3"></a>
                         <span class="course-name">Excel</span>
+                    </div>
+                    <div class="course-item">
+                        <a href="curso4.html" ><img src="Tecnologia4.png" alt="Curso 4"></a>
+                        <spam class="course-name">Powerpoint</spam>
                     </div>
                 </div>
                 <span class="arrow arrow-right">&#9654;</span>
@@ -115,20 +121,23 @@
 
     <script>
         const carouselWrapper = document.querySelector('.carousel-wrapper');
-        const images = document.querySelectorAll('.course-carousel img');
+        const courseItems = document.querySelectorAll('.course-item');
+        const carouselWidth = document.querySelector('.course-carousel').offsetWidth;
+        const itemWidth = courseItems[0].offsetWidth + 20; // largura do item mais a margem
         let currentIndex = 0;
 
         document.querySelector('.arrow-left').addEventListener('click', () => {
             if (currentIndex > 0) {
                 currentIndex--;
-                carouselWrapper.style.transform = `translateX(-${currentIndex * (images[0].parentElement.clientWidth + 20)}px)`;
+                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
             }
         });
 
         document.querySelector('.arrow-right').addEventListener('click', () => {
-            if (currentIndex < images.length - 1) {
+            const visibleItems = Math.floor(carouselWidth / itemWidth);
+            if (currentIndex < courseItems.length - visibleItems) {
                 currentIndex++;
-                carouselWrapper.style.transform = `translateX(-${currentIndex * (images[0].parentElement.clientWidth + 20)}px)`;
+                carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
             }
         });
     </script>
