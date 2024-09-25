@@ -155,3 +155,47 @@ footer {
     width: 100%;
     height: auto;
 }
+
+/* Estilos para o catálogo de vídeos */
+#catalogo-videos {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.video-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Espaçamento entre os vídeos */
+    margin-top: 20px;
+}
+
+.video-item {
+    flex: 1 1 300px; /* Cada vídeo ocupa até 300px de largura */
+    max-width: 300px; /* Limita a largura máxima */
+    text-align: center;
+}
+
+.video-item video {
+    width: 100%;
+    height: auto;
+    max-width: 300px; /* Garante que o vídeo seja responsivo */
+}
+
+.video-name {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Estilos responsivos para dispositivos menores */
+@media (max-width: 768px) {
+    .video-item {
+        flex: 1 1 200px; /* Ajusta a largura dos vídeos em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .video-item {
+        flex: 1 1 150px; /* Ajuste para dispositivos muito pequenos */
+    }
+}
