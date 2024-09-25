@@ -21,6 +21,7 @@
         .carousel-wrapper {
             display: flex;
             transition: transform 0.5s ease-in-out;
+            overflow-x: auto; /* Add this to enable horizontal scrolling */
         }
     
         .course-item {
@@ -76,23 +77,6 @@
         .scrollbar input {
             width: 100%;
             cursor: pointer;
-        }
-    
-        /* Animação de três pontinhos */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(26, 31, 54, 0.9); /* Fundo escuro com opacidade */
-            z-index: 9999; /* Garante que fique em cima de outros elementos */
-            color: #60a5fa;
-            font-size: 2em;
-            font-weight: bold;
         }
 
         .loading span {
@@ -190,17 +174,12 @@
             <h2>Cursos Disponíveis</h2>
             <br>
 
-            <!-- Animação de três pontinhos carregando -->
-            <div id="loading-animation" class="loading" style="display: none;">
-                <span>.</span><span>.</span><span>.</span>
-            </div>
-
             <div class="scrollbar">
                 <input type="range" min="0" max="100" value="0" id="scroll-bar">
             </div>
             <div class="course-carousel">
                 <div class="carousel-controls">
-                    <span class="arrow arrow-left">&#9664;</span>
+                    <button class="arrow arrow-left" id="prev-button">&#9664;</button>
                     <div class="carousel-wrapper">
                         <div class="course-item">
                             <a href="curso1text.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
@@ -243,7 +222,7 @@
                             <span class="course-name">Excel Avançado</span>
                         </div>
                     </div>
-                    <span class="arrow arrow-right">&#9654;</span>
+                    <button class="arrow arrow-right" id="next-button">&#9654;</button>
                 </div>
             </div>
         </section>
@@ -332,6 +311,24 @@
             const percentage = (carouselWrapper.scrollLeft / maxScroll) * 100;
             scrollBar.value = percentage;
         });
+
+        // Adicione código para lidar com os botões de navegação
+const prevButton = document.getElementById('prev-button');
+const nextButton = document.getElementById('next-button');
+
+prevButton.addEventListener('click', () => {
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    const scrollLeft = carouselWrapper.scrollLeft;
+    carouselWrapper.scrollLeft = scrollLeft - 200; // ajuste o valor para o tamanho do item
+});
+
+nextButton.addEventListener('click', () => {
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    const scrollLeft = carouselWrapper.scrollLeft;
+    const maxScroll = carouselWrapper.scrollWidth - carouselWrapper.clientWidth;
+    carouselWrapper.scrollLeft = Math.min(scrollLeft + 200, maxScroll); // ajuste o valor para o tamanho do item
+});
+
     </script>
 </body>
 </html>
