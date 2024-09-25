@@ -131,6 +131,12 @@
             .carousel-controls {
                 justify-content: space-between;
             }
+
+            /* Ajustes para o vídeo em dispositivos móveis */
+            #video video {
+                width: 100%;
+                height: auto;
+            }
         }
     
         @media (max-width: 480px) {
@@ -175,7 +181,7 @@
         <section id="video">
             <h2>Assista ao vídeo!</h2>
             <br>
-            <video width="600" controls>
+            <video style="width: 100%; max-width: 600px; height: auto;" controls>
                 <source src="Introdução do Site.mp4" type="video/mp4">
                 Seu navegador não suporta o elemento de vídeo.
             </video>
@@ -247,45 +253,55 @@
         </section>
     </div>
     <footer>
-        <p>&copy; 2024 Cursos do professor Kellton Rodrigo. Todos os direitos reservados.</p>
+        <p>&copy; 2024 Cursos do Professor Kellton Rodrigo. Todos os direitos reservados.</p>
     </footer>
-
     <script>
-        // Exemplo de animação de carregamento
-        window.onload = function() {
-            document.getElementById("loading-animation").style.display = "none";
-        };
-
-        // Lógica do carrossel
         const carouselWrapper = document.querySelector('.carousel-wrapper');
-        const leftArrow = document.querySelector('.arrow-left');
-        const rightArrow = document.querySelector('.arrow-right');
         const scrollBar = document.getElementById('scroll-bar');
+        const loadingAnimation = document.getElementById('loading-animation');
 
-        let scrollIndex = 0;
-        const itemsToShow = 4; // Quantidade de cursos a serem mostrados
+        let isDragging = false;
+        let startX, scrollLeft;
 
-        function updateCarousel() {
-            const totalItems = carouselWrapper.children.length;
-            const maxScrollIndex = totalItems - itemsToShow;
-            scrollIndex = Math.max(0, Math.min(scrollIndex, maxScrollIndex));
-            const scrollAmount = scrollIndex * (carouselWrapper.children[0].clientWidth + 20); // Adiciona a margem de 20px
-            carouselWrapper.style.transform = `translateX(-${scrollAmount}px)`;
-        }
-
-        leftArrow.addEventListener('click', () => {
-            scrollIndex--;
-            updateCarousel();
+        // Função para iniciar a interação de arrastar
+        carouselWrapper.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - carouselWrapper.offsetLeft;
+            scrollLeft = carouselWrapper.scrollLeft;
+            loadingAnimation.style.display = 'block'; // Exibe animação de carregamento
         });
 
-        rightArrow.addEventListener('click', () => {
-            scrollIndex++;
-            updateCarousel();
+        // Função para arrastar
+        carouselWrapper.addEventListener('mouseleave', () => {
+            isDragging = false;
+            loadingAnimation.style.display = 'none'; // Oculta animação de carregamento
         });
 
-        scrollBar.addEventListener('input', (event) => {
-            scrollIndex = Math.floor(event.target.value / 10); // Ajuste para corresponder ao valor do scroll bar
-            updateCarousel();
+        carouselWrapper.addEventListener('mouseup', () => {
+            isDragging = false;
+            loadingAnimation.style.display = 'none'; // Oculta animação de carregamento
+        });
+
+        carouselWrapper.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - carouselWrapper.offsetLeft;
+            const walk = (x - startX) * 2; // Aumenta a velocidade do arrasto
+            carouselWrapper.scrollLeft = scrollLeft - walk;
+        });
+
+        // Atualiza a posição da barra de rolagem
+        scrollBar.addEventListener('input', () => {
+            const maxScroll = carouselWrapper.scrollWidth - carouselWrapper.clientWidth;
+            const value = scrollBar.value;
+            carouselWrapper.scrollLeft = (value / 100) * maxScroll;
+        });
+
+        // Sincroniza a barra de rolagem com o carrossel
+        carouselWrapper.addEventListener('scroll', () => {
+            const maxScroll = carouselWrapper.scrollWidth - carouselWrapper.clientWidth;
+            const percentage = (carouselWrapper.scrollLeft / maxScroll) * 100;
+            scrollBar.value = percentage;
         });
     </script>
 </body>
