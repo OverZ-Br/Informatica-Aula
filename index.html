@@ -78,6 +78,41 @@
             cursor: pointer;
         }
     
+        /* Animação de três pontinhos */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(26, 31, 54, 0.9); /* Fundo escuro com opacidade */
+            z-index: 9999; /* Garante que fique em cima de outros elementos */
+            color: #60a5fa;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .loading span {
+            animation: blink 1s infinite;
+        }
+
+        .loading span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    
         /* Estilos para dispositivos móveis */
         @media (max-width: 768px) {
             .course-item {
@@ -137,9 +172,23 @@
             <br>
             <p>O Professor Kellton Rodrigo é um especialista em sua área com anos de experiência e uma paixão por ensinar. Conheça mais sobre sua trajetória e expertise.</p>
         </section>
+        <section id="video">
+            <h2>Assista ao vídeo!</h2>
+            <br>
+            <video width="600" controls>
+                <source src="Animaker - Introdução do Site 2024-09-25.mp4" type="video/mp4">
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+        </section>
         <section id="cursos">
             <h2>Cursos Disponíveis</h2>
             <br>
+
+            <!-- Animação de três pontinhos carregando -->
+            <div id="loading-animation" class="loading" style="display: none;">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+
             <div class="scrollbar">
                 <input type="range" min="0" max="100" value="0" id="scroll-bar">
             </div>
@@ -148,43 +197,43 @@
                     <span class="arrow arrow-left">&#9664;</span>
                     <div class="carousel-wrapper">
                         <div class="course-item">
-                            <a href="curso1.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
+                            <a href="curso1text.html"><img src="Tecnologia1.png" alt="Curso 1"></a>
                             <span class="course-name">Informática Kids</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso2.html"><img src="Tecnologia2.png" alt="Curso 2"></a>
+                            <a href="curso2text.html"><img src="Tecnologia2.png" alt="Curso 2"></a>
                             <span class="course-name">Games kids</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso3.html"><img src="imagem-excel.webp" alt="Curso 3"></a>
+                            <a href="curso3text.html"><img src="imagem-excel.webp" alt="Curso 3"></a>
                             <span class="course-name">Excel</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso4.html"><img src="imagem-powerpoin.png" alt="Curso 4"></a>
+                            <a href="curso4text.html"><img src="imagem-powerpoin.png" alt="Curso 4"></a>
                             <span class="course-name">Powerpoint</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso5.html"><img src="Imagem-Word.png" alt="Curso 5"></a>
+                            <a href="curso5text.html"><img src="Imagem-Word.png" alt="Curso 5"></a>
                             <span class="course-name">Word</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso6.html"><img src="Imagem-Seguranca-Digital.png" alt="Curso 6"></a>
+                            <a href="curso6text.html"><img src="Imagem-Seguranca-Digital.png" alt="Curso 6"></a>
                             <span class="course-name">Segurança Digital</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso7.html"><img src="Imagem-Multimidia.png" alt="Curso 7"></a>
+                            <a href="curso7text.html"><img src="Imagem-Multimidia.png" alt="Curso 7"></a>
                             <span class="course-name">Multimídia</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso8.html"><img src="imagem-midias-sociais.png" alt="Curso 8"></a>
+                            <a href="curso8text.html" alt="Curso 8"><img src="imagem-midias-sociais.png"></a>
                             <span class="course-name">Mídias Sociais</span>
                         </div>
                         <div class="course-item">
-                            <a href="Curso9.html"><img src="imagem-manutenção-de-computadores.png" alt="Curso 9"></a>
+                            <a href="curso9text.html"><img src="imagem-manutenção-de-computadores.png" alt="Curso 9"></a>
                             <span class="course-name">Manutenção de Computadores</span>
                         </div>
                         <div class="course-item">
-                            <a href="curso10.html"><img src="Imagem-excel-avançado.webp" alt="Curso 10"></a>
+                            <a href="curso10text.html"><img src="Imagem-excel-avançado.webp" alt="Curso 10"></a>
                             <span class="course-name">Excel Avançado</span>
                         </div>
                     </div>
@@ -202,104 +251,42 @@
     </footer>
 
     <script>
+        // Exemplo de animação de carregamento
+        window.onload = function() {
+            document.getElementById("loading-animation").style.display = "none";
+        };
+
+        // Lógica do carrossel
         const carouselWrapper = document.querySelector('.carousel-wrapper');
-        const courseItems = document.querySelectorAll('.course-item');
-        const itemWidth = courseItems[0].offsetWidth + 20; // largura do item mais a margem
-        let currentIndex = 0;
-        let currentTranslate = 0;
+        const leftArrow = document.querySelector('.arrow-left');
+        const rightArrow = document.querySelector('.arrow-right');
+        const scrollBar = document.getElementById('scroll-bar');
 
-        // Função para atualizar a posição com base no índice
-        const setPositionByIndex = () => {
-            currentTranslate = currentIndex * -itemWidth;
-            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
-            updateScrollbar();
-        };
+        let scrollIndex = 0;
+        const itemsToShow = 4; // Quantidade de cursos a serem mostrados
 
-        // Função para atualizar a posição da barra de rolagem
-        const updateScrollbar = () => {
-            const maxScroll = (courseItems.length - 1) * itemWidth;
-            const scrollValue = Math.abs((currentTranslate / maxScroll) * 100);
-            document.getElementById('scroll-bar').value = scrollValue;
-        };
+        function updateCarousel() {
+            const totalItems = carouselWrapper.children.length;
+            const maxScrollIndex = totalItems - itemsToShow;
+            scrollIndex = Math.max(0, Math.min(scrollIndex, maxScrollIndex));
+            const scrollAmount = scrollIndex * (carouselWrapper.children[0].clientWidth + 20); // Adiciona a margem de 20px
+            carouselWrapper.style.transform = `translateX(-${scrollAmount}px)`;
+        }
 
-        // Ajuste do carrossel com as setas
-        document.querySelector('.arrow-left').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                setPositionByIndex();
-            }
+        leftArrow.addEventListener('click', () => {
+            scrollIndex--;
+            updateCarousel();
         });
 
-        document.querySelector('.arrow-right').addEventListener('click', () => {
-            if (currentIndex < courseItems.length - 1) {
-                currentIndex++;
-                setPositionByIndex();
-            }
+        rightArrow.addEventListener('click', () => {
+            scrollIndex++;
+            updateCarousel();
         });
 
-        // Implementação do drag com mouse e toque
-        let isDragging = false;
-        let startPos = 0;
-        let prevTranslate = 0;
-        let animationID;
-
-        const touchStart = (event) => {
-            isDragging = true;
-            startPos = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-            prevTranslate = currentTranslate;
-            animationID = requestAnimationFrame(animation);
-            carouselWrapper.style.transition = 'none';
-        };
-
-        const touchEnd = () => {
-            isDragging = false;
-            cancelAnimationFrame(animationID);
-
-            const movedBy = currentTranslate - prevTranslate;
-
-            if (movedBy < -100 && currentIndex < courseItems.length - 1) {
-                currentIndex++;
-            }
-
-            if (movedBy > 100 && currentIndex > 0) {
-                currentIndex--;
-            }
-
-            setPositionByIndex();
-            carouselWrapper.style.transition = 'transform 0.3s ease-out';
-        };
-
-        const touchMove = (event) => {
-            if (isDragging) {
-                const currentPosition = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-                currentTranslate = prevTranslate + currentPosition - startPos;
-            }
-        };
-
-        const animation = () => {
-            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
-            if (isDragging) requestAnimationFrame(animation);
-        };
-
-        carouselWrapper.addEventListener('mousedown', touchStart);
-        carouselWrapper.addEventListener('mouseup', touchEnd);
-        carouselWrapper.addEventListener('mousemove', touchMove);
-        carouselWrapper.addEventListener('mouseleave', () => {
-            if (isDragging) touchEnd();
+        scrollBar.addEventListener('input', (event) => {
+            scrollIndex = Math.floor(event.target.value / 10); // Ajuste para corresponder ao valor do scroll bar
+            updateCarousel();
         });
-
-        carouselWrapper.addEventListener('touchstart', touchStart);
-        carouselWrapper.addEventListener('touchend', touchEnd);
-        carouselWrapper.addEventListener('touchmove', touchMove);
-
-        // Controle pela barra de rolagem
-        const bar = document.getElementById('scroll-bar');
-        bar.addEventListener('input', (e) => {
-            const maxScroll = (courseItems.length - 1) * itemWidth;
-            currentTranslate = -(e.target.value / 100) * maxScroll;
-            carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
-        });
-
     </script>
 </body>
 </html>
