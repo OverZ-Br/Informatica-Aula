@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #e0f7fa;
+    font-family: 'Arial', sans-serif;
+}
+
+#container {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.block {
+    background-color: #4dd0e1;
+    color: white;
+    text-align: center;
+    font-size: 30px; /* Aumentando o tamanho da fonte */
+    padding: 30px; /* Aumentando o padding */
+    border-radius: 10px;
+    position: relative;
+    height: 200px; /* Aumentando a altura das divs */
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movable-icon {
+    position: absolute;
+    font-size: 100px; /* Aumentando o tamanho dos ícones */
+    cursor: pointer;
+    user-select: none; /* Evita a seleção de texto ao arrastar */
+    transition: transform 0.1s; /* Suaviza o movimento */
+}
