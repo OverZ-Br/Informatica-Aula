@@ -1,12 +1,12 @@
 const cardImages = [
-    'imagem/laptop.png',
-    'imagem/computador.png',
-    'imagem/gabinete.png',
-    'imagem/headset.png',
-    'imagem/mouse.png',
-    'imagem/caixadesom2.png',
-    'imagem/Impressora.png',
-    'imagem/teclado.png'
+    'laptop.png',
+    'computador.png',
+    'gabinete.png',
+    'headset.png',
+    'mouse.png',
+    'caixadesom2.png',
+    'Impressora.png',
+    'teclado.png'
 ];
 
 let cardArray = [...cardImages, ...cardImages]; // Duplicar as imagens
